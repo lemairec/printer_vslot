@@ -10,6 +10,7 @@ module barre_in(l){
 
 
 module _barre2040(l=100){
+    echo("2040", l);
     difference(){
         translate([-10, -20])cube([20.5, 40.5, l]);
         translate([0, -10]) rotate([0,0,90])barre_in(l);
@@ -47,6 +48,7 @@ module _barre2020(l){
 };
 
 module barre2020(l,center = false){
+    echo("2020", l);
     if(center){
         translate([0, 0, -l/2]) _barre2020(l);
     } else {
@@ -55,5 +57,17 @@ module barre2020(l,center = false){
 };
 
 
-barre2020(100);
+module vslot2020(){
+    difference(){
+        hull(){
+            cylinder(r=25/2, 5, center = true);
+            cylinder(r=20/2, 10, center = true);
+        }
+        cylinder(r=5/2, 12, center = true);
+    }
+}
+
+
+
+//barre2020(100);
 
