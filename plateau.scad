@@ -1,11 +1,15 @@
-use <2020.scad>
-use <rounded_box.scad>
+include <inc/2020.scad>
+use <inc/rounded_box.scad>
+use <inc/nema17.scad>
+use <../piece3d/config.scad>
 
 //translate([-35, -30,0])import("hbar.stl");
 
 h_l = 40.5;
 h_lg = 35;
 e=4;
+
+r_vis = 2.75;
 
 module renfort(){
     rotate(a=[90,-90,0])
@@ -25,16 +29,17 @@ module h_corner(roue = true){
         
         for(i=[-1,1]){
             for(j=[-1,1]){
-                translate([i*h_l/2, j*h_lg/2, -1]) cylinder(r=5.2/2, 20+2);
+                translate([i*h_l/2, j*h_lg/2, -1]) cylinder(r=r_vis, 20+2);
             }
         }
         
         for(i=[-1,1]){
-            translate([0,i*10,23]) rotate([0,90,0]) cylinder(r = 2.6, 100, center = true);
+            translate([0,i*10,23]) rotate([0,90,0]) cylinder(r = r_vis, 100, center = true);
         }
         
         translate([0,0,e]) rotate([0,0,90])barre2040p(100);
         
+        translate([-(h_l/2-5),10,8]) rotate([90,90,0]) support_nut(3,20, 600);
         
     }
     
@@ -61,9 +66,39 @@ module plateau(l=300, lg=200, plateau_l=200){
     
 }
 
-mode = 1;
+module support_nema17(l=300, lg=200, plateau_l=200){
+    difference(){
+        translate([-20,0,0])cube([40,62,3]);
+        translate([0,21.5+20,-22])nema17();
+        for(i=[-1,1]){
+            translate([i*15, 10, 0]) cylinder(r=2.6, 20, center=true);
+        }
+    }
+    
+}
+
+module support_ecrou(l=300, lg=200, plateau_l=200){
+    difference(){
+        union(){
+            translate([-20,0,0])cube([40,20,5]);
+            translate([-20,0,0])cube([40,5, 20]);
+            translate([0,12,0])cylinder(r=10, 8);
+        }
+        translate([0,21.5+20,-22])nema17();
+        for(i=[-1,1]){
+            translate([i*15, 0, 12]) rotate([90,0,0]) cylinder(r=2.6, 20, center=true);
+        }
+        translate([0, 12, 10]) rotate([180,0,0]) m8(11, true);
+        
+    }
+    
+    
+}
+
+mode = 0;
 if(mode == 0){
     plateau();
+    
 } else {
     h_corner(false);
 }

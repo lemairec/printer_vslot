@@ -56,18 +56,27 @@ module vslot20x40(length, finish) { vslot(length, 2, finish); }
 
 
 module barre2040(length, center){
+    echo("barre 2040 ", length);
     vslot(length, 2, color_aluminum, center);
 }
 
 module barre2040p(length, center){
+    //echo("barre 2040p ", length);
     union(){
         vslot(length, 2, color_aluminum, center);
         translate([-18.5, -10, 0])cube([37, 20, length]);
     }
 }
 
+module barre2040p_lg(length, center){
+    //echo("barre 2040p ", length);
+    scale([1.01,1.02,1]) barre2040p(length, center);
+}
+
+
 
 module barre2020(length, center){
+    echo("barre 2020 ", length);
     vslot(length, 1, color_aluminum, center);
 }
 
@@ -255,7 +264,7 @@ module stop_y(motor = false){
     }
 }
 
-mode =1;
+mode =3;
 if(mode==1){
     roulement_y();
 } else if (mode ==2){
